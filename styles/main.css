@@ -153,6 +153,11 @@ select {
     min-height: 1.2rem;
 }
 
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+    border: 2px solid var(--red);
+}
+
 button {
     background: var(--blue);
     color: white;

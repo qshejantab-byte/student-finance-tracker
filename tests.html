@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 16px; }
+        .pass { color: green; }
+        .fail { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Validator tests</h1>
+    <p id="summary" role="status"></p>
+    <ul id="results"></ul>
+
+    <script type="module">
+        import { checkDescription, checkAmount, checkDate, checkCategory } from "./scripts/validators.js";
+        let passed = o;
+        let failed = 0;
+        const list = document.getElementById("results");
+
+        function show(name, ok) {
+            const li = document.createElement("li");
+            li.textContent = (ok ? "PASS: " : "FAIL: ") + name;
+             li.className = ok ? "pass" : "fail";
+            list.appendChild(li);
+            if (ok) {
+                passed++;
+            } else {
+                failed++;
+            }
+        }
+
+        // a valid value should give an empty message
+        function shouldPass(name, checkFunction, value) {
+            show(name + " accepts '" + value + "'", checkFunction(value) === "");
+        }
+
+        // an invalid value should give na error message
+        function shouldFail(name, checkFunction, value) {
+            show(name + " rejects '" + value + "'", checkFunction(value) !== "");
+        }
+
+        // description
+        shouldPass("description", checkDescription, "Lunch at cafeteria");
+        shouldPass("description", checkDescription, "Bus 2 tickets");
+        shouldPass("description", checkDescription, "");
+        shouldPass("description", checkDescription, " Lunch ");
+        shouldPass("description", checkDescription, "Lunch ");
+        shouldPass("description", checkDescription, "Lunch at");
+        shouldPass("description", checkDescription, "12345");
+        shouldPass("description", checkDescription, "bus bus ticket");
+
+        // amount
+        shouldPass("description", checkAmount, "12");
+        shouldPass("description", checkAmount, "12.5");
+        shouldPass("description", checkAmount, "12.50");
+        shouldPass("description", checkAmount, "0.99");
+        shouldPass("description", checkAmount, "");
+        shouldPass("description", checkAmount, "abc");
+        shouldPass("description", checkAmount, "12.555");
+        shouldPass("description", checkAmount, "012");
+        shouldPass("description", checkAmount, "-5");
+        shouldPass("description", checkAmount, "0");
+        shouldPass("description", checkAmount, "12,50");
+
+        // date
+        shouldPass("description", checkDate, "2026-10-12");
+        shouldPass("description", checkDate, "2024-02-29");
+        shouldPass("description", checkDate, "");
+        shouldPass("description", checkDate, "2026-13-01");
+        shouldPass("description", checkDate, "2026-02-30");
+        shouldPass("description", checkDate, "2025-02-29");
+        shouldPass("description", checkDate, "26-10-12");
+        shouldPass("description", checkDate, "2026-10-32");
+
+        // category
+        shouldPass("description", checkCategory, "food");
+        shouldPass("description", checkCategory, "Fast food");
+        shouldPass("description", checkCategory, "Self-care");
+        shouldPass("description", checkCategory, "");
+        shouldPass("description", checkCategory, "Food123");
+        shouldPass("description", checkCategory, " Food");
+        shouldPass("description", checkCategory, "Food-");
+
+        document.getElementById("summary").textContent =
+        passed + " passed, " + failed + " failed";
+    </script>
+</body>
+</html>
