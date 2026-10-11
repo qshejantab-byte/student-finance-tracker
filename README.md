@@ -1,2 +1,5 @@
-# student-finance-tracker
-Student Finance Tracker built with vanilla HTML, CSS and JavaScript
+# student finance tracker
+
+Vanilla HTML, CSS and Javasrcipt app to track student spending.
+
+Work in progress.
