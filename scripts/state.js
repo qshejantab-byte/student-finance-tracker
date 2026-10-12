@@ -1,6 +1,25 @@
-import { loadRecords, saveRecords } from "./storage.js";
+import { loadRecords, saveRecords, loadSettings, saveSettings } from "./storage.js";
 
 let records = loadRecords();
+
+const defaultSettings = {
+    baseCurrency: "RWF",
+    currencies: ["RWF", "USD", "EUR"],
+    rates: { USD: 0.0007, EUR: 0.0006 },
+    cap: 0,
+    categories: ["Food", "Books", "Transport", "Entertainment", "Fees", "Other"]
+};
+
+let settings = Object.assign({}, defaukltSettings, loadSettings());
+
+export function getSettings () {
+    return settings;
+}
+
+export function updateSettings(changes) {
+    Object.assign(settings, changes);
+    saveSettings(settings);
+}
 
 export function getRecords() {
     return records;

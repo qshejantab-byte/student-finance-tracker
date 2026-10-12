@@ -1,4 +1,4 @@
-import { getRecords, sortRecords } from "./state";
+import { getRecords, sortRecords, getSettings } from "./state";
 import { compileRegex, hasMatch, highlight } from "./search";
 
 const body = document.getElementById("records-body");
@@ -94,4 +94,122 @@ export function renderRecords() {
         searchMessage.textContent = "Showing " + list.length + " of " + all.length + " records.";
         searchInput.removeAttribute("aria-invalid");
     }
+}
+
+const statusCount = document.getElementById("stat-count");
+const statSum = document.getElementById("stat-sum");
+const statTop = document.getElementById("stat-top");
+const trendChart = document.getElementById("trend-chart");
+const capMessage = document.getElementById("cap-message");
+
+// date as YYYY-MM-DD using the local time 
+function toDateString(d) {
+    const month = STring(d.getMonth() + 1).padStart(2, "0");
+    const day = string(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + month + day;
+}
+
+export function renderStats() {
+    const records = getRecords();
+    const settings = getSettings();
+    const currency = settings.baseCurrency;
+
+    // total, and total for each category
+    let total = 0;
+    const byCategory = new Map();
+    for (let i = 0; i < records.length; i++) {
+        total += records[i].amount;
+        const category = records [i].category;
+        byCategory.set(category, (byCategory.get(category) || 0) + records[i].amount);
+    }
+    total = Math.round(total * 100) / 100;
+
+    // category with the biggest total
+    let topNames = "";
+    let topAmount = 0;
+    byCategory.forEach(function (amount, name) {
+        if (amount > topAmount) {
+            topAmount = amount;
+            topName= name;
+        }
+    });
+
+    statusCount.textContent = records.length;
+    statSum.textContent = total.toFixed(2) + " " + currency;
+    if (topName === "") {
+        statTop.textContent = "-";
+    } else {
+        statTop.textContent = topName + " (" + topAmount.toFixed(2) + ")";
+    }
+
+// last 7 days, today is the last one
+const dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const days = [];
+for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push({ key: toDateString(d), label: dayNames[d.getDay()], total: 0 });
+}
+for (let i = 0; i < records.length; i++) {
+    for (let j = 0; j < days.length; j++) {
+        if (records[i].date === days[j].key) {
+            days[j].total += records[i].amount;
+        }
+    }
+}
+
+let max = 0;
+for (let i = 0; i < days.length; i++) {
+    if (days[i].total > max) {
+        max = days[i].total;
+    }
+}
+
+trendChart.innerHTML = "";
+const summary = [];
+for (let i = 0; i < days.length; i++) {
+    const col = document.createElement("div");
+    col.className = "bar-col";
+
+    const value = document.createElement("span");
+    value.className = "bar-value";
+    value.textContent = Math.round(days[i].total);
+
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    let height = 0;
+    if (max > 0) {
+        height = Math.round(days[i].total / max * 80);
+    }
+    bar.style.height = height + "px";
+
+    const label = document.createElement("span");
+    label.className = "bar-label";
+    label.textContent = days[i].label;
+
+    col.appendChild(value);
+    col.appendChild(bar);
+    col.appendChild(label);
+    trendChart.appendChild(col);
+
+    summary.push(days[i].label + " " + days[i].total.toFixed(2));
+}
+// the chart is drawn with divs, so we give screen readers the numbers as text
+trendChart.setAttribute("role", "img");
+trendChart.setAttribute("aria-label", "Spending in the last 7 days: " + summary.join(", "));
+
+// cap message
+const cap = settings.cap;
+capMessage.classList.remove("cap-over");
+if (!cap || cap <=0) {
+    capMessage.setAttribute("aria-live", "polite");
+    capMessage.textContent = "No cap set. You can set one in Settings.";
+} else if (total <= cap) {
+    capMessage.setAttribute("aria-live", "assertive");
+    capMessage.textContent = "You have " + (cap - total).toFixed(2) + " " + currency + " left of your " + cap.toFixed(2) + " cap.";
+} else {
+    capMessage.setAttribute("aria-live", "assertive");
+    capMessage.classList.add("cap-over");
+    capMessage.textContent = "You are " + (total - cap).toFixed(2) + " " + currency + " over you " + cap.toFixed(2) + " cap.";
+}
 }
