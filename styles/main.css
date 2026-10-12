@@ -178,6 +178,19 @@ button:active {
     transform: scale(0.97);
 }
 
+td button {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+}
+
+button.delete {
+    background: var(--red);
+}
+
+button.delete:hover {
+    background: #7f0017;
+}
+
 /* table: cards on mobile */
 table {
     width: 100%;
