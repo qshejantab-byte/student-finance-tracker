@@ -1,0 +1,119 @@
+[
+    {
+        "id": "rec_0001",
+        "description": "Lunch at cafeteria",
+        "amount": 2500,
+        "category": "Food",
+        "date": "2024-10-13",
+        "createdAt": "2024-10-13T08:00:00.000Z",
+        "updatedAt": "2024-10-13T08:00:00.000Z"
+    },
+    {
+        "id": "rec_0002",
+        "description": "Coffee and croissant",
+        "amount": 1800.5,
+        "category": "Food",
+        "date": "2024-10-12",
+        "createdAt": "2024-10-12T07:30:00.000Z",
+        "updatedAt": "2024-10-12T07:30:00.000Z"
+    },
+    {
+        "id": "rec_0003",
+        "description": "Bus ticket to kigali",
+        "amount": 1200,
+        "category": "Transport",
+        "date": "2024-10-12",
+        "createdAt": "2024-10-12T09:00:00.000Z",
+        "updatedAt": "2024-10-12T09:00:00.000Z"
+    },
+    {
+        "id": "rec_0004",
+        "description": "Algorithms textbook",
+        "amount": 4500,
+        "category": "Books",
+        "date": "2024-10-10",
+        "createdAt": "2024-10-10T12:00:00.000Z",
+        "updatedAt": "2024-10-10T12:00:00.000Z"
+    },
+    {
+        "id": "rec_0005",
+        "description": "Semester fees installment",
+        "amount": 999999.99,
+        "category": "Fees",
+        "date": "2024-10-09",
+        "createdAt": "2024-10-01T10:00:00.000Z",
+        "updatedAt": "2024-10-01T10:00:00.000Z"
+    },
+    {
+        "id": "rec_0006",
+        "description": "Chewing gum",
+        "amount": 0.01,
+        "category": "Other",
+        "date": "2024-10-11",
+        "createdAt": "2024-10-11T15:00:00.000Z",
+        "updatedAt": "2024-10-11T15:00:00.000Z"
+    },
+    {
+        "id": "rec_0007",
+        "description": "Movie night",
+        "amount": 6000,
+        "category": "Entertainment",
+        "date": "2024-10-09",
+        "createdAt": "2024-10-09T19:00:00.000Z",
+        "updatedAt": "2024-10-09T19:00:00.000Z"
+    },
+    {
+        "id": "rec_0008",
+        "description": "Leap day snacks",
+        "amount": 3500,
+        "category": "Food",
+        "date": "2024-02-29",
+        "createdAt": "2024-02-29T14:00:00.000Z",
+        "updatedAt": "2024-02-29T14:00:00.000Z"
+    },
+    {
+        "id": "rec_0009",
+        "description": "New year bus fare",
+        "amount": 800,
+        "category": "Transport",
+        "date": "2025-12-31",
+        "createdAt": "2025-12-31T18:00:00.000Z",
+        "updatedAt": "2025-12-31T18:00:00.000Z"
+    },
+    {
+        "id": "rec_0010",
+        "description": "Notebook <b>pack</b> & pens",
+        "amount": 2300.75,
+        "category": "Books",
+        "date": "2024-10-08",
+        "createdAt": "2026-10-08T11:00:00.000Z",
+        "updatedAt": "2026-10-08T11:00:00.000Z"
+    },
+    {
+        "id": "rec_0011",
+        "description": "Café au lait (large)",
+        "amount": 1500,
+        "category": "Food",
+        "date": "2024-10-13",
+        "createdAt": "2026-10-13T10:00:00.000Z",
+        "updatedAt": "2026-10-13T10:00:00.000Z"
+    },
+    {
+        "id": "rec_0012",
+        "description": "Tea with friends",
+        "amount": 700,
+        "category": "Food",
+        "date": "2026-10-07",
+        "createdAt": "2026-10-07T16:00:00.000Z",
+        "updatedAt": "2026-10-07T16:00:00.000Z"
+    },
+    {
+        "id": "rec_0013",
+        "description": "Uber to airport - 2 stops",
+        "amount": 18000,
+        "category": "Transport",
+        "date": "2026-01-01",
+        "createdAt": "2026-10-05T20:00:00.000Z",
+        "updatedAt": "2026-10-05T20:00:00.000Z"
+    }
+]

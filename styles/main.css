@@ -114,6 +114,11 @@ h2 {
     font-weight: bold;
 }
 
+.stat-box .converted {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
 .chart {
     display: flex;
     align-items: flex-end;

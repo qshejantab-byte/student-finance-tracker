@@ -26,11 +26,11 @@
 
         <section id="about">
             <h2>About</h2>
-            <p>Welcome to the Student Finance Tracker! 
-            This application helps students manage their finances effectively by tracking income, 
-            expenses, and savings. Stay on top of your financial goals with ease.</p>
+            <p>This app helps a student keep track of money spent.
+            You can add transactions, search them, and see how much
+            of your spending cap is left.</p>
             <p>Github: <a href="https://github.com/qshejantab-byte">qshejantab-byte</a></p>
-            <p>Email: <a href="mailto:qshejantab@gmail.com">qshejantab@gmail.com</a></p>
+            <p>Email: <a href="mailto:q.shejantab@alustudent.com">q.shejantab@alustudent.com</a></p>
         </section>
 
         <section id="dashboard">
@@ -43,6 +43,7 @@
                 <div class="stat-box">
                     <h3>Total spent</h3>
                     <p id="stat-sum">0</p>
+                    <p id="stat-converted" class="converted"></p>
                 </div>
                 <div class="stat-box">
                     <h3>Top category</h3>
@@ -71,14 +72,14 @@
                     <label for="search-case">Ignore case</label>
                 </div>
                 <div class="field">
-                    <label for="sort-select">sort by</label>
+                    <label for="sort-select">Sort by</label>
                     <select id="sort-select">
                         <option value="date-desc">Date (newest first)</option>
-                        <option value="date-desc">Date (oldest first)</option>
-                        <option value="date-desc">Description (A to Z)</option>
-                        <option value="date-desc">Description (Z to A)</option>
-                        <option value="date-desc">Amount (low to high)</option>
-                        <option value="date-desc">Amount (high to low)</option>
+                        <option value="date-asc">Date (oldest first)</option>
+                        <option value="desc-asc">Description (A to Z)</option>
+                        <option value="desc-desc">Description (Z to A)</option>
+                        <option value="amount-asc">Amount (low to high)</option>
+                        <option value="amount-desc">Amount (high to low)</option>
                     </select>
                 </div>
               </div>
@@ -153,13 +154,13 @@
               </div>
 
               <div class="field">
-                <label for="rate-usd">1 RWF in USD</label>
-                <input type="text" id="rate-usd" inputmode="decimal">
+                <label for="rate-1" id="rate-1-label">1 RWF in USD</label>
+                <input type="text" id="rate-1" inputmode="decimal">
               </div>
 
               <div class="field">
-                <label for="rate-eur">1 RWF in EUR</label>
-                <input type="text" id="rate-eur" inputmode="decimal">
+                <label for="rate-2" id="rate-2-label">1 RWF in EUR</label>
+                <input type="text" id="rate-2" inputmode="decimal">
               </div>
 
               <div class="field">

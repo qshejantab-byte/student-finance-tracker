@@ -10,7 +10,7 @@ const defaultSettings = {
     categories: ["Food", "Books", "Transport", "Entertainment", "Fees", "Other"]
 };
 
-let settings = Object.assign({}, defaukltSettings, loadSettings());
+let settings = Object.assign({}, defaultSettings, loadSettings());
 
 export function getSettings () {
     return settings;
@@ -25,7 +25,7 @@ export function getRecords() {
     return records;
 }
 
-export function getRecords(id) {
+export function getRecord(id) {
     for (let i=0; i < records.length; i++) {
         if (records[i].id === id) {
             return records[i];
@@ -46,7 +46,7 @@ function makeId() {
     return "rec_" + String(max + 1).padStart(4, "0");
 }
 
-export function addRecords(data) {
+export function addRecord(data) {
     const now = new Date().toISOString();
     const record = {
         id: makeId(),
@@ -54,7 +54,7 @@ export function addRecords(data) {
         amount: data.amount,
         category: data.category,
         date: data.date,
-        createAt: now,
+        createdAt: now,
         updatedAt: now
     };
     records.push(record);
@@ -62,7 +62,7 @@ export function addRecords(data) {
     return record;
 }
 
-export function updateRecords(id, data) {
+export function updateRecord(id, data) {
     const record = getRecord(id);
     if (record === null) {
         return;
@@ -84,19 +84,19 @@ export function deleteRecord(id) {
 
 // returns a sorted copy, the original list stays the same
 export function sortRecords(list, how) {
-    const copy = list. slide();
+    const copy = list. slice();
     copy.sort(function (a, b) {
         if (how === "date-desc") {
-            return b.date.localCompare(a.date);
+            return b.date.localeCompare(a.date);
         }
         if (how === "date-asc") {
-            return a.date.localCompare(b.date);
+            return a.date.localeCompare(b.date);
         }
         if (how === "desc-asc") {
-            return a.description.localCompare(b.description);
+            return a.description.localeCompare(b.description);
         }
         if (how === "desc-desc") {
-            return b.description.localCompare(a.description);
+            return b.description.localeCompare(a.description);
         }
         if (how === "amount-asc") {
             return a.amount - b.amount;
@@ -107,4 +107,9 @@ export function sortRecords(list, how) {
         return 0;
     });
     return copy;
+}
+
+export function replaceRecords(list) {
+    records = list;
+    saveRecords(records);
 }

@@ -2,7 +2,6 @@ import { checkDescription, checkAmount, checkCategory, checkDate, checkRate, che
 import { addRecord, updateRecord, deleteRecord, getRecord, getRecords, replaceRecords, getSettings, updateSettings } from "./state.js";
 import { renderRecords, renderStats } from "./ui.js";
 
-
 const form = document.getElementById("record-form");
 const idInput = document.getElementById("record-id");
 const descInput = document.getElementById("description");
@@ -18,9 +17,9 @@ const baseSelect = document.getElementById("base-currency");
 const rate1Input = document.getElementById("rate-1");
 const rate2Input = document.getElementById("rate-2");
 const rate1Label = document.getElementById("rate-1-label");
-const rate2Lable = document.getElementById("rate-2-label");
+const rate2Label = document.getElementById("rate-2-label");
 const categoriesInput = document.getElementById("categories-input");
-const settingdMessage = document.getElementById("settings=message");
+const settingsMessage = document.getElementById("settings-message");
 
 // import and export
 const importFile = document.getElementById("import-file");
@@ -223,6 +222,7 @@ function getOtherCurrencies(base) {
 function updateRateFields(base, useSaved) {
     const others = getOtherCurrencies(base);
     const inputs = [rate1Input, rate2Input];
+    const labels = [rate1Label, rate2Label];
 
     for (let i = 0; i < 2; i++) {
         labels[i].textContent = "1 " + base + " in " + others[i];
@@ -246,9 +246,9 @@ function fillSettingsForm() {
 }
 
 function clearSettingsErrors() {
-    const inputs = [capInput, baseSelect, rateInput, rate2Input, categoriesInput];
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].setAttribute("aria-invalid");
+    const inputs = [capInput, baseSelect, rate1Input, rate2Input, categoriesInput];
+        for (let i = 0; i < inputs.length; i++) {
+        inputs[i].removeAttribute("aria-invalid");
     }
 }
 
@@ -289,7 +289,7 @@ function saveSettingsForm() {
     if (capInput.value !== "") {
         const message = checkAmount(capInput.value);
         if (message !== "") {
-            settingsError(capInput, "cap: " + message);
+            settingsError(capInput, "Cap: " + message);
             return;
         }
         cap = Number(capInput.value);
@@ -377,7 +377,7 @@ function importRecords(text) {
     return;
 }
 
-const problem = checkRecordsList(data);
+const problem = checkRecordList(data);
 if (problem !== "") {
     importMessage.textContent = "The file is not valid: " + problem;
     return;
@@ -385,8 +385,8 @@ if (problem !== "") {
 
 const oldCount = getRecords().length;
 if (oldCount > 0) {
-    const ok = confirm("This replace your " + oldCount + " current records with " + data.length + " imported records. Continue?");
-    if (!ok) {
+    const ok = confirm("This replaces your " + oldCount + " current records with " + data.length + " imported records. Continue?");
+        if (!ok) {
         importMessage.textContent = "Import cancelled.";
         return;
     }
@@ -408,7 +408,7 @@ for (let i = 0; i < data.length; i++) {
     }
 
     replaceRecords(clean);
-    addNewCategories(clean);
+    addCategoriesFromRecords(clean);
     resetForm();
     refresh();
     importMessage.textContent = "Imported " + clean.length + " records.";

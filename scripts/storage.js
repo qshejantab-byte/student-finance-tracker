@@ -1,6 +1,6 @@
 const RECORDS_KEY = "sft:records";
 
-export function leadRecords() {
+export function loadRecords() {
     try {
         const text = localStorage.getItem(RECORDS_KEY);
         if (text === null) {
@@ -24,7 +24,7 @@ export function saveRecords(records) {
     }
 }
 
-const SETTINGD_KEY = "SFT:settings";
+const SETTINGS_KEY = "sft:settings";
 
 export function loadSettings() {
     try {
@@ -33,7 +33,7 @@ export function loadSettings() {
             return null;
         }
         const data = JSON. parse(text);
-        if (data !== null && typeof data === "objetc" && !Array.isArray(data)) {
+        if (data !== null && typeof data === "object" && !Array.isArray(data)) {
             return data;
         }
         return null;

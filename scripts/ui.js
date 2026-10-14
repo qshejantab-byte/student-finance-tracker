@@ -1,5 +1,5 @@
-import { getRecords, sortRecords, getSettings } from "./state";
-import { compileRegex, hasMatch, highlight } from "./search";
+import { getRecords, sortRecords, getSettings } from "./state.js";
+import { compileRegex, hasMatch, highlight } from "./search.js";
 
 const body = document.getElementById("records-body");
 const emptyMessage = document.getElementById("empty-message");
@@ -10,7 +10,7 @@ const sortSelect = document.getElementById("sort-select");
 
 function makeCell(label) {
     const td = document.createElement("td");
-    td.setAttributeNS("data-label", label);
+        td.setAttribute("data-label", label);
     return td;
 }
 
@@ -29,7 +29,7 @@ function makeButton(text, action, records) {
 
 export function renderRecords() {
     const all = getRecords();
-    const result = compileRegex(searchInput.ariaValueMax, searchCase.checked);
+    const result = compileRegex(searchInput.value, searchCase.checked);    
     const regex = result.regex;
 
     let list = sortRecords(all, sortSelect.value);
@@ -46,7 +46,7 @@ export function renderRecords() {
 
     body.innerHTML = "";
 
-    for (let i=onabort; i < list.length; i++) {
+        for (let i = 0; i < list.length; i++) {
         const record = list[i];
         const tr = document.createElement("tr");
 
@@ -56,8 +56,8 @@ export function renderRecords() {
         const descCell = makeCell("Description");
         highlight(descCell, record.description, regex);
 
-        const categoryCell = makeCell("category");
-        Highlight(categoryCell, record.category, regex);
+        const categoryCell = makeCell("Category");
+        highlight(categoryCell, record.category, regex);
 
         const amountCell = makeCell("Amount");
         highlight(amountCell, record.amount.toFixed(2), regex);
@@ -66,7 +66,7 @@ export function renderRecords() {
         actionCell.appendChild(makeButton("Edit", "edit", record));
         actionCell.appendChild(makeButton("Delete", "delete", record));
 
-        tr.appendChild(dataCell);
+        tr.appendChild(dateCell);
         tr.appendChild(descCell);
         tr.appendChild(categoryCell);
         tr.appendChild(amountCell);
@@ -101,12 +101,13 @@ const statSum = document.getElementById("stat-sum");
 const statTop = document.getElementById("stat-top");
 const trendChart = document.getElementById("trend-chart");
 const capMessage = document.getElementById("cap-message");
+const statConverted = document.getElementById("stat-converted");
 
 // date as YYYY-MM-DD using the local time 
 function toDateString(d) {
-    const month = STring(d.getMonth() + 1).padStart(2, "0");
-    const day = string(d.getDate()).padStart(2, "0");
-    return d.getFullYear() + "-" + month + day;
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + month + "-" + day;
 }
 
 export function renderStats() {
@@ -125,7 +126,7 @@ export function renderStats() {
     total = Math.round(total * 100) / 100;
 
     // category with the biggest total
-    let topNames = "";
+    let topName = "";
     let topAmount = 0;
     byCategory.forEach(function (amount, name) {
         if (amount > topAmount) {
@@ -136,14 +137,25 @@ export function renderStats() {
 
     statusCount.textContent = records.length;
     statSum.textContent = total.toFixed(2) + " " + currency;
-    if (topName === "") {
+    // total in the other currencies, using the rates from settings
+    const parts = [];
+    for (let i = 0; i < settings.currencies.length; i++) {
+        const code = settings.currencies[i];
+        const rate = settings.rates[code];
+        if (code !== currency && rate !== undefined) {
+            parts.push ((total * rate).toFixed(2) + " " + code);
+        }
+
+    }
+    statConverted.textContent = parts.join(", ");
+            if (topName === "") {
         statTop.textContent = "-";
     } else {
         statTop.textContent = topName + " (" + topAmount.toFixed(2) + ")";
     }
 
 // last 7 days, today is the last one
-const dayName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const days = [];
 for (let i = 6; i >= 0; i--) {
     const d = new Date();
@@ -205,11 +217,11 @@ if (!cap || cap <=0) {
     capMessage.setAttribute("aria-live", "polite");
     capMessage.textContent = "No cap set. You can set one in Settings.";
 } else if (total <= cap) {
-    capMessage.setAttribute("aria-live", "assertive");
+    capMessage.setAttribute("aria-live", "polite");
     capMessage.textContent = "You have " + (cap - total).toFixed(2) + " " + currency + " left of your " + cap.toFixed(2) + " cap.";
 } else {
     capMessage.setAttribute("aria-live", "assertive");
     capMessage.classList.add("cap-over");
-    capMessage.textContent = "You are " + (total - cap).toFixed(2) + " " + currency + " over you " + cap.toFixed(2) + " cap.";
+    capMessage.textContent = "You are " + (total - cap).toFixed(2) + " " + currency + " over your " + cap.toFixed(2) + " cap.";
 }
 }

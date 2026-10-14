@@ -16,8 +16,8 @@
     <ul id="results"></ul>
 
     <script type="module">
-        import { checkDescription, checkAmount, checkDate, checkCategory } from "./scripts/validators.js";
-        let passed = o;
+        import { checkDescription, checkAmount, checkDate, checkCategory, checkRate, checkRecordList } from "./scripts/validators.js";
+        let passed = 0;
         let failed = 0;
         const list = document.getElementById("results");
 
@@ -43,50 +43,75 @@
             show(name + " rejects '" + value + "'", checkFunction(value) !== "");
         }
 
-        // description
+                // description
         shouldPass("description", checkDescription, "Lunch at cafeteria");
         shouldPass("description", checkDescription, "Bus 2 tickets");
-        shouldPass("description", checkDescription, "");
-        shouldPass("description", checkDescription, " Lunch ");
-        shouldPass("description", checkDescription, "Lunch ");
-        shouldPass("description", checkDescription, "Lunch at");
-        shouldPass("description", checkDescription, "12345");
-        shouldPass("description", checkDescription, "bus bus ticket");
+        shouldFail("description", checkDescription, "");
+        shouldFail("description", checkDescription, " Lunch");
+        shouldFail("description", checkDescription, "Lunch ");
+        shouldFail("description", checkDescription, "Lunch  at");
+        shouldFail("description", checkDescription, "12345");
+        shouldFail("description", checkDescription, "bus bus ticket");
 
         // amount
-        shouldPass("description", checkAmount, "12");
-        shouldPass("description", checkAmount, "12.5");
-        shouldPass("description", checkAmount, "12.50");
-        shouldPass("description", checkAmount, "0.99");
-        shouldPass("description", checkAmount, "");
-        shouldPass("description", checkAmount, "abc");
-        shouldPass("description", checkAmount, "12.555");
-        shouldPass("description", checkAmount, "012");
-        shouldPass("description", checkAmount, "-5");
-        shouldPass("description", checkAmount, "0");
-        shouldPass("description", checkAmount, "12,50");
+        shouldPass("amount", checkAmount, "12");
+        shouldPass("amount", checkAmount, "12.5");
+        shouldPass("amount", checkAmount, "12.50");
+        shouldPass("amount", checkAmount, "0.99");
+        shouldFail("amount", checkAmount, "");
+        shouldFail("amount", checkAmount, "abc");
+        shouldFail("amount", checkAmount, "12.555");
+        shouldFail("amount", checkAmount, "012");
+        shouldFail("amount", checkAmount, "-5");
+        shouldFail("amount", checkAmount, "0");
+        shouldFail("amount", checkAmount, "12,50");
 
         // date
-        shouldPass("description", checkDate, "2026-10-12");
-        shouldPass("description", checkDate, "2024-02-29");
-        shouldPass("description", checkDate, "");
-        shouldPass("description", checkDate, "2026-13-01");
-        shouldPass("description", checkDate, "2026-02-30");
-        shouldPass("description", checkDate, "2025-02-29");
-        shouldPass("description", checkDate, "26-10-12");
-        shouldPass("description", checkDate, "2026-10-32");
+        shouldPass("date", checkDate, "2026-10-12");
+        shouldPass("date", checkDate, "2024-02-29");
+        shouldFail("date", checkDate, "");
+        shouldFail("date", checkDate, "2026-13-01");
+        shouldFail("date", checkDate, "2026-02-30");
+        shouldFail("date", checkDate, "2025-02-29");
+        shouldFail("date", checkDate, "26-10-12");
+        shouldFail("date", checkDate, "2026-10-32");
 
         // category
-        shouldPass("description", checkCategory, "food");
-        shouldPass("description", checkCategory, "Fast food");
-        shouldPass("description", checkCategory, "Self-care");
-        shouldPass("description", checkCategory, "");
-        shouldPass("description", checkCategory, "Food123");
-        shouldPass("description", checkCategory, " Food");
-        shouldPass("description", checkCategory, "Food-");
+        shouldPass("category", checkCategory, "Food");
+        shouldPass("category", checkCategory, "Fast food");
+        shouldPass("category", checkCategory, "Self-care");
+        shouldFail("category", checkCategory, "");
+        shouldFail("category", checkCategory, "Food123");
+        shouldFail("category", checkCategory, " Food");
+        shouldFail("category", checkCategory, "Food-");
+
+        // rate
+        shouldPass("rate", checkRate, "0.0007");
+        shouldPass("rate", checkRate, "1");
+        shouldFail("rate", checkRate, "");
+        shouldFail("rate", checkRate, "0");
+        shouldFail("rate", checkRate, "0.1234567");
+        shouldFail("rate", checkRate, "abc");
+
+        const goodRecord = {
+            id: "rec_001",
+            description: "Lunch at cafeteria",
+            amount: 2500,
+            category: "Food",
+            date: "2026-10-13",
+            createdAt: "2026-10-13T08:00:00Z",
+            updatedAt: "2026-10-13T08:00:00Z"
+        };
+        show("import accepts a good list", checkRecordList([goodRecord]) === "");
+        show("import rejects a plain text", checkRecordList("hello") !== "");
+        show("import rejects an object", checkRecordList({}) !== "");
+        show("import rejects missing id", checkRecordList([{ description: "Lunch at cafeteria" }]) !== "");
+        show("import rejects text amount", checkRecordList([Object.assign({}, goodRecord, { amount: "12" })]) !== "");
+        show("import rejects bad date", checkRecordList([Object.assign({}, goodRecord, { date: "2026-02-30" })]) !== "");
+        show("import rejects same id twice", checkRecordList([goodRecord, goodRecord]) !== "");
 
         document.getElementById("summary").textContent =
-        passed + " passed, " + failed + " failed";
+        passed + "passed, " +  failed + "failed";
     </script>
 </body>
 </html>

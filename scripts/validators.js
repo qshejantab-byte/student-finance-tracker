@@ -21,7 +21,7 @@ export function checkDescription(text) {
     if (!rules.description.test(text)) {
         return "No spaces at the start or the end.";
     }
-    if (rules.description.test(test)) {
+    if (rules.doubleSpace.test(test)) {
         return "No double spaces.";
     }
     if (!rules.hasLetter.test(text)) {
@@ -35,10 +35,10 @@ export function checkDescription(text) {
 
 export function checkAmount(text) {
     if (text=== "") {
-        return "Amount id required.";
+        return "Amount is required.";
     }
     if (!rules.amount.test(text)) {
-        return "Use a numnber like 12 or 12.50 (2 decimals at most).";
+            return "Use a number like 12 or 12.50 (2 decimals at most).";
     }
     if (Number(text) ===0) {
         return "Amount must be more than 0.";
@@ -46,7 +46,7 @@ export function checkAmount(text) {
     return "";
 }
 
-export function checkDates(text) {
+export function checkDate(text) {
     if (text === "") {
         return "Date is required.";
     }
@@ -85,7 +85,7 @@ export function checkRate(text) {
 }
 
 // checks a list of records from a JSON file, return "" if it is fine
-export function checkRecordsList(data) {
+export function checkRecordList(data) {
     if (!Array.isArray(data)) {
         return "The data is not a list.";
     }
@@ -122,13 +122,13 @@ if (typeof item.id !== "string" || item.id === "") {
 
         // use the same rules as the form
         let message = checkDescription(item.description);
-        if (message !== "") {
+        if (message === "") {
             message = checkAmount(String(item.amount));
         }
-        if (message !== "") {
+        if (message === "") {
             message = checkCategory(item.category);
         }
-        if (message !== "") {
+        if (message === "") {
             message = checkDate(item.date);
         }
         if (message !== "") {
