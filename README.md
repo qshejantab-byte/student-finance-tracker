@@ -1,7 +1,6 @@
 # student finance tracker
  A small web app to track student spending, built with plain HTML, CSS and Javascript.
 
- - Live site: https://qshejantab-byte.github.io/student-finance-tracker/
  - Repo: https://github.com/qshejantab-byte/student-finance-tracker
  - Demo video: https://www.youtube.com/watch?v=984ju0u8zB4
 
